@@ -19,7 +19,7 @@ update-submodule:
 
 build: update-submodule
 	docker build --platform linux/amd64 -t $(REPO_NAME):$(ImageTag) .
-	docker tag $(AWS_REPO):$(ImageTag)
+	docker tag $(REPO_NAME):$(ImageTag) $(AWS_REPO):$(ImageTag)
 
 push:
 	docker push $(AWS_REPO):$(ImageTag)
