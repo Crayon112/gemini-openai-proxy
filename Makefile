@@ -28,6 +28,12 @@ clean:
 	docker rmi $(REPO_NAME):$(ImageTag)
 	docker rmi $(AWS_REPO):$(ImageTag)
 
+deploy-lambda: build push clean
+	aws --profile $(Profile) --region $(Region) \
+	lambda update-function-code \
+	--function-name $(FUNCTION_NAME) \
+	--image-uri $(AWS_REPO):$(ImageTag)
+
 podman-build: update-submodule
 	podman build --platform linux/amd64 -t $(REPO_NAME):$(ImageTag) .
 	podman tag $(REPO_NAME):$(ImageTag) $(AWS_REPO):$(ImageTag)
