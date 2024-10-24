@@ -1,7 +1,7 @@
 ImageTag := $(shell git rev-parse HEAD)
 ID := 041486995294
 Region := us-east-2
-Profile := us-east
+Profile := default
 PodmanProfile := us-east
 FUNCTION_NAME := gemini-openai-proxy
 REPO_NAME := gemini-openai-proxy
@@ -18,15 +18,15 @@ update-submodule:
 	git submodule update --init
 
 build: update-submodule
-	docker build --platform linux/amd64 -t $(REPO_NAME):$(ImageTag) .
-	docker tag $(REPO_NAME):$(ImageTag) $(AWS_REPO):$(ImageTag)
+	sudo docker build --platform linux/amd64 -t $(REPO_NAME):$(ImageTag) .
+	sudo docker tag $(REPO_NAME):$(ImageTag) $(AWS_REPO):$(ImageTag)
 
 push:
-	docker push $(AWS_REPO):$(ImageTag)
+	sudo docker push $(AWS_REPO):$(ImageTag)
 
 clean:
-	docker rmi $(REPO_NAME):$(ImageTag)
-	docker rmi $(AWS_REPO):$(ImageTag)
+	sudo docker rmi $(REPO_NAME):$(ImageTag)
+	sudo docker rmi $(AWS_REPO):$(ImageTag)
 
 deploy-lambda: build push clean
 	aws --profile $(Profile) --region $(Region) \
