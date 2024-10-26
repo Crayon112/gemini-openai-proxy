@@ -107,8 +107,6 @@ export function genModel(req: OpenAI.Chat.ChatCompletionCreateParams): [GeminiMo
 
   const responseMimeType = req.response_format?.type === "json_object" ? "application/json" : "text/plain"
 
-  const systemPrompt = openAiMessageToGeminiSystemPrompt(req.messages);
-
   const generateContentRequest: GenerateContentRequest = {
     systemInstruction: openAiMessageToGeminiSystemPrompt(req.messages),
     contents: openAiMessageToGeminiMessage(req.messages),
